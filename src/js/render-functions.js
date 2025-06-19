@@ -94,3 +94,12 @@ export function hideLoader() {
   loaderWrapper.innerHTML = '';
   loaderWrapper.style.display = 'none';
 }
+
+export function showLoadMoreButton() {
+  const loadMoreButton = document.querySelector('.load-more');
+  loadMoreButton.style.display = 'block';
+}
+export function hideLoadMoreButton() {
+  const loadMoreButton = document.querySelector('.load-more');
+  loadMoreButton.style.display = 'none';
+}
