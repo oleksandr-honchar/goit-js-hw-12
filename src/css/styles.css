@@ -6,7 +6,7 @@
 
 body {
   background-color: #f0f0f0;
-  margin: 64px;
+  margin: 40px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   font-size: 16px;
@@ -75,7 +75,7 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
-  margin: 0 auto;
+  margin: 0 auto 32px;
   justify-content: center;
   align-items: center;
 }
@@ -122,5 +122,5 @@ button:hover {
 
 .load-more {
   width: 125px;
-  margin: 32px auto 16px;
+  margin: 0 auto;
 }

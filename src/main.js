@@ -9,6 +9,7 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
+  scrollPage,
 } from './js/render-functions.js';
 
 const form = document.querySelector('.form');
@@ -47,7 +48,7 @@ async function handleSubmit(e) {
       return;
     }
 
-    await createGallery(data.hits);
+    createGallery(data.hits);
 
     if (data.totalHits > data.hits.length) {
       showLoadMoreButton();
@@ -64,9 +65,15 @@ async function handleSubmit(e) {
 }
 
 async function handleLoadMore() {
+  hideLoadMoreButton();
   showLoader();
 
+  // const loaderWrapper = document.querySelector('.loader-wrapper');
+  // loaderWrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
   try {
+    // await new Promise(resolve => setTimeout(resolve, 300));
+
     currentPage += 1;
     const data = await getImagesByQuery(searchQuery, currentPage);
 
@@ -80,10 +87,11 @@ async function handleLoadMore() {
       return;
     }
 
-    await createGallery(data.hits);
+    createGallery(data.hits);
+    scrollPage();
 
-    if (currentPage * data.hits.length >= data.totalHits) {
-      hideLoadMoreButton();
+    if (currentPage * data.hits.length < data.totalHits) {
+      showLoadMoreButton();
     }
   } catch (error) {
     iziToast.error({
