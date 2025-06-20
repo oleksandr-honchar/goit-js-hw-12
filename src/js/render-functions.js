@@ -8,9 +8,9 @@ export const LOADER = [
     css: `.loader {
     display: block;
     margin: 0 auto;
-  position: relative;
-  width: 85px;
-  height: 50px;
+    position: relative;
+  width: 80px;
+  height: 40px;
   background-repeat: no-repeat;
   background-image: linear-gradient(#333333 50px, transparent 0),
                     linear-gradient(#333333 50px, transparent 0),
@@ -70,6 +70,17 @@ export function createGallery(images) {
   } else {
     lightbox.refresh();
   }
+
+  const loadedImages = document.querySelectorAll('.gallery-image');
+  const imagePromises = Array.from(loadedImages).map(img => {
+    if (img.complete) return Promise.resolve();
+    return new Promise(resolve => {
+      img.onload = resolve;
+      img.onerror = resolve;
+    });
+  });
+
+  return Promise.all(imagePromises);
 }
 
 export function clearGallery() {
