@@ -68,12 +68,7 @@ async function handleLoadMore() {
   hideLoadMoreButton();
   showLoader();
 
-  // const loaderWrapper = document.querySelector('.loader-wrapper');
-  // loaderWrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
   try {
-    // await new Promise(resolve => setTimeout(resolve, 300));
-
     currentPage += 1;
     const data = await getImagesByQuery(searchQuery, currentPage);
 
