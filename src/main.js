@@ -61,16 +61,16 @@ async function handleSubmit(e) {
     }
 
     createGallery(data.hits);
-
     totalPages = Math.ceil(data.totalHits / per_page);
 
     if (currentPage < totalPages) {
       showLoadMoreButton();
     }
   } catch (error) {
+    console.error('Error in handleSubmit:', error);
     iziToast.error({
       title: 'Error',
-      message: error.message,
+      message: 'Failed to load images. Please try again.',
       position: 'topRight',
     });
   } finally {
@@ -86,30 +86,33 @@ async function handleLoadMore() {
     currentPage += 1;
     const data = await getImagesByQuery(searchQuery, currentPage);
 
-    if (!data?.hits?.length) {
-      hideLoadMoreButton();
-      iziToast.error({
-        title: 'End of results',
-        message: "We're sorry, but you've reached the end of search results.",
-        position: 'topRight',
-      });
-      return;
+    if (!data || !Array.isArray(data.hits)) {
+      throw new Error('Invalid data received from server');
     }
 
     createGallery(data.hits);
     scrollPage();
 
+    // Show button if there are more pages to load
     if (currentPage < totalPages) {
       showLoadMoreButton();
     } else {
-      hideLoadMoreButton();
+      // Only show end of results message on the actual last page
+      iziToast.info({
+        title: 'End of results',
+        message: "You've reached the end of search results.",
+        position: 'topRight',
+      });
     }
   } catch (error) {
+    console.error('Error in handleLoadMore:', error);
+    currentPage -= 1; // Revert page increment on error
     iziToast.error({
       title: 'Error',
-      message: error.message,
+      message: 'Failed to load more images. Please try again.',
       position: 'topRight',
     });
+    showLoadMoreButton(); // Show button again to allow retry
   } finally {
     hideLoader();
   }
