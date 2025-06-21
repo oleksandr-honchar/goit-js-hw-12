@@ -9,13 +9,25 @@ import {
   hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
-  scrollPage,
 } from './js/render-functions.js';
 
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
 let currentPage = 1;
 let searchQuery = '';
+let totalPages = 0;
+const per_page = 15;
+
+function scrollPage() {
+  const galleryItem = document.querySelector('.gallery-item');
+  if (galleryItem) {
+    const { height: cardHeight } = galleryItem.getBoundingClientRect();
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  }
+}
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -50,7 +62,9 @@ async function handleSubmit(e) {
 
     createGallery(data.hits);
 
-    if (data.totalHits > data.hits.length) {
+    totalPages = Math.ceil(data.totalHits / per_page);
+
+    if (currentPage < totalPages) {
       showLoadMoreButton();
     }
   } catch (error) {
@@ -85,8 +99,10 @@ async function handleLoadMore() {
     createGallery(data.hits);
     scrollPage();
 
-    if (currentPage * data.hits.length < data.totalHits) {
+    if (currentPage < totalPages) {
       showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
     }
   } catch (error) {
     iziToast.error({

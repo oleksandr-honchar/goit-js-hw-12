@@ -114,14 +114,3 @@ export function hideLoadMoreButton() {
   const loadMoreButton = document.querySelector('.load-more');
   loadMoreButton.style.display = 'none';
 }
-
-export function scrollPage() {
-  const galleryItem = document.querySelector('.gallery-item');
-  if (galleryItem) {
-    const { height: cardHeight } = galleryItem.getBoundingClientRect();
-    window.scrollBy({
-      top: cardHeight * 2,
-      behavior: 'smooth',
-    });
-  }
-}
