@@ -93,11 +93,9 @@ async function handleLoadMore() {
     createGallery(data.hits);
     scrollPage();
 
-    // Show button if there are more pages to load
     if (currentPage < totalPages) {
       showLoadMoreButton();
     } else {
-      // Only show end of results message on the actual last page
       iziToast.info({
         title: 'End of results',
         message: "You've reached the end of search results.",
@@ -106,13 +104,13 @@ async function handleLoadMore() {
     }
   } catch (error) {
     console.error('Error in handleLoadMore:', error);
-    currentPage -= 1; // Revert page increment on error
+    currentPage -= 1;
     iziToast.error({
       title: 'Error',
       message: 'Failed to load more images. Please try again.',
       position: 'topRight',
     });
-    showLoadMoreButton(); // Show button again to allow retry
+    showLoadMoreButton();
   } finally {
     hideLoader();
   }
